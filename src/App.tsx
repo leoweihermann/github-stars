@@ -1,5 +1,15 @@
 import React from 'react';
 
-const App: React.FC = () => <h1>GitHub Stars</h1>;
+import Home from './pages/Home';
+
+import GlobalStyle from './styles/global';
+
+const App: React.FC = () => (
+  <>
+    <Home />
+
+    <GlobalStyle />
+  </>
+);
 
 export default App;
