@@ -25,3 +25,37 @@ export const Logo = styled.div`
 
   gap: 8px;
 `;
+
+export const LoginButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+  padding: 8px;
+  border: none;
+  background-color: #87ff8b;
+
+  transition: background-color 0.2s;
+
+  &:hover {
+    filter: brightness(0.9);
+  }
+`;
+
+export const User = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+`;
+
+export const LogoutButton = styled.button`
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  background-color: transparent;
+`;
