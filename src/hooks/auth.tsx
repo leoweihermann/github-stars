@@ -30,7 +30,10 @@ export const AuthProvider: React.FC = ({ children }) => {
   const signIn = useCallback(async () => {
     const response = await socialMediaAuth(githubProvider);
     const auth = JSON.parse(JSON.stringify(response));
-
+    // eslint-disable-next-line no-console
+    console.log(response);
+    // eslint-disable-next-line no-console
+    console.log(auth);
     const token = auth.credential.oauthAccessToken;
 
     const { username } = auth.userInfo;
