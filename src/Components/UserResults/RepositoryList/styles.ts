@@ -27,23 +27,17 @@ export const Repositories = styled.div`
 
   margin: 2rem;
 
-  a {
+  div {
     background: #fff;
     border-radius: 5px;
     width: 100%;
     padding: 24px;
-    display: block;
-    text-decoration: none;
     display: flex;
     align-items: center;
     transition: transform 0.2s;
 
-    & + a {
+    & + div {
       margin-top: 16px;
-    }
-
-    &:hover {
-      transform: translateX(10px);
     }
 
     img {
@@ -55,6 +49,11 @@ export const Repositories = styled.div`
     div {
       margin: 0 16px;
       flex: 1;
+
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
       strong {
         font-size: 20px;
         color: #3d3d4d;
@@ -71,5 +70,29 @@ export const Repositories = styled.div`
       margin-left: auto;
       color: #cbcbd6;
     }
+  }
+`;
+
+export const StarButton = styled.button`
+  display: flex;
+  gap: 4px;
+
+  font-size: 12px;
+  width: 85px;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+  border: 0;
+  color: #fff;
+  font-weight: bold;
+  transition: background-color 0.2s;
+
+  background-color: #0d1117;
+  padding: 8px;
+
+  &:hover {
+    filter: brightness(0.9);
   }
 `;

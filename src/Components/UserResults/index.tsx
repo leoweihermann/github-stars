@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { gql, useQuery } from '@apollo/client';
+
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '../../hooks/auth';
 
 import UserInfo from './UserInfo';
 import RepositoryList from './RepositoryList';
@@ -13,8 +16,17 @@ interface IUserResultsProps {
 }
 
 const UserResults: React.FC<IUserResultsProps> = ({ userName }) => {
+  const { authData } = useAuth();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!authData.token) {
+      history.push('/');
+    }
+  }, [history, authData.token]);
+
   const GET_STARREDREPOSITORIES = gql`
-    query ($user: String!, $nextPage: String, $previousPage: String) {
+    query ($user: String!, $nextPage: String) {
       user(login: $user) {
         id
         avatarUrl
@@ -24,7 +36,7 @@ const UserResults: React.FC<IUserResultsProps> = ({ userName }) => {
         location
         url
         login
-        starredRepositories(after: $nextPage, before: $previousPage) {
+        starredRepositories(after: $nextPage) {
           pageInfo {
             startCursor
             hasPreviousPage
@@ -37,6 +49,7 @@ const UserResults: React.FC<IUserResultsProps> = ({ userName }) => {
             name
             description
             url
+            viewerHasStarred
             owner {
               avatarUrl
             }
@@ -46,13 +59,21 @@ const UserResults: React.FC<IUserResultsProps> = ({ userName }) => {
     }
   `;
 
-  const { loading, data } = useQuery(GET_STARREDREPOSITORIES, {
+  const { loading, data, refetch } = useQuery(GET_STARREDREPOSITORIES, {
     variables: {
       user: userName,
       nextPage: '',
-      previousPage: '',
     },
   });
+
+  const handleUpdateResults = useCallback(() => {
+    if (data && data.user.starredRepositories.pageInfo.hasNextPage) {
+      refetch({
+        user: userName,
+        nextPage: data.user.starredRepositories.pageInfo.endCursor,
+      });
+    }
+  }, [refetch, userName, data]);
 
   return (
     <Container>
@@ -65,6 +86,7 @@ const UserResults: React.FC<IUserResultsProps> = ({ userName }) => {
               <UserInfo userInfo={data.user} />
               <RepositoryList
                 repositories={data.user.starredRepositories.nodes}
+                handleUpdateResults={handleUpdateResults}
               />
             </>
           )}
